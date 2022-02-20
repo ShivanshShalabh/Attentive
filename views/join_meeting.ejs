@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="form.css" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script
+      src="https://kit.fontawesome.com/6d82381473.js"
+      crossorigin="anonymous"
+    ></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join Meeting</title>
+  </head>
+
+  <body class="bg1 bg">
+    <div class="error" id="error" style="display: none">
+      <h3 id="error-text"></h3>
+    </div>
+    <nav>
+      <h1 class="logo heading-logo">Attentive</h1>
+      <a href="/"><i class="fas fa-home"></i></a>
+    </nav>
+    <main>
+      <form method="POST" action="/join_room">
+        <div id="meeting-id">
+          <span> Meeting Id: </span>
+          <input required type="text" name="meetingId" id="meetingId" />
+        </div>
+        <div id="password">
+          <span> Password: </span>
+          <input
+            required
+            type="text"
+            name="meetingPassword"
+            id="meetingPassword"
+            minlength="6"
+            maxlength="12"
+          />
+        </div>
+        <div id="joining-name">
+          <span> Name: </span>
+
+          <input
+            required
+            type="text"
+            name="userName"
+            id="userName"
+            maxlength="25"
+          />
+        </div>
+        <div>
+          <button type="submit">
+            Join Now <i class="fas fa-phone-alt"></i>
+          </button>
+        </div>
+      </form>
+    </main>
+    <footer>© 2022 Attentive All Rights Reserved</footer>
+
+    <script>
+      if ("<%= user.meetingPassword %>" != "") {
+        document.getElementById("meetingPassword").value =
+          "<%=user.meetingPassword %>";
+        document.getElementById("meetingId").value = "<%=user.meetingId %>";
+        document.getElementById("userName").value = "<%=user.userName%>";
+        document.getElementById("error").style.display = "block";
+        document.getElementById("error-text").innerText =
+          "Invalid Meeting ID/ Password";
+      }
+      let formDimensions = document
+        .getElementsByTagName("form")[0]
+        .getBoundingClientRect();
+      if (window.innerHeight - 80 >= formDimensions.bottom) {
+        document
+          .getElementsByTagName("footer")[0]
+          .classList.add("footer-fixed");
+      }
+      window.addEventListener("resize", () => {
+        formDimensions = document
+          .getElementsByTagName("form")[0]
+          .getBoundingClientRect();
+        if (window.innerHeight - 80 >= formDimensions.bottom) {
+          document
+            .getElementsByTagName("footer")[0]
+            .classList.add("footer-fixed");
+        } else {
+          document
+            .getElementsByTagName("footer")[0]
+            .classList.remove("footer-fixed");
+        }
+      });
+    </script>
+  </body>
+</html>

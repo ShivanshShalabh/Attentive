@@ -1,8 +1,8 @@
 {
-  "name": "attendobot",
+  "name": "Attentive",
   "version": "1.0.0",
   "engines": {
-    "node": "12.21.0"
+    "node": ">=12.20"
   },
   "description": "",
   "main": "server.js",
@@ -13,14 +13,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/aiplatform": "^1.11.0",
+    "@google-cloud/vision": "^2.4.0",
     "@heroku-cli/plugin-buildpacks": "^7.54.0",
     "@heroku/buildpack-registry": "^1.0.1",
     "async-file": "^2.0.2",
+    "body-parser": "^1.19.0",
     "cli-ux": "^5.6.3",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "got": "^11.8.2",
     "heroku": "^7.59.0",
+    "nodemon": "^2.0.14",
     "peer": "^0.6.1",
     "phoenix": "^1.6.0",
     "socket.io": "^4.2.0",

@@ -1,0 +1,631 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poiret+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Exo:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2&family=Comfortaa:wght@300&family=Georama:wght@300&family=Josefin+Sans:wght@300;400&family=Montserrat&display=swap");
+@font-face {
+  font-family: Aquire;
+  src: url("Fonts/AquireBold-8Ma60.otf.otf");
+}
+
+@font-face {
+  font-family: Aquire;
+  font-weight: bold;
+  src: url("Fonts/AquireBold-8Ma60.otf");
+}
+
+@font-face {
+  font-family: Aquire;
+  font-weight: lighter;
+  src: url("Fonts/AquireLight-YzE0o.otf");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #333333;
+  overflow-x: hidden;
+}
+
+/* Homepage's Poster CSS starts here */
+
+.poster {
+  margin-top: 2%;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 20px;
+}
+
+.poster svg {
+  padding: 2%;
+  width: 30%;
+}
+
+h3 {
+  font-size: 2rem;
+  font-weight: 300;
+  font-family: "Josefin Sans", sans-serif;
+  padding: 0 10px;
+
+  text-align: justify;
+}
+
+/* Homepage's Poster CSS ends here */
+
+/* Homepage's Main content CSS starts here */
+
+.box {
+  color: white;
+  background-color: #181818;
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+
+  justify-content: space-around;
+}
+
+#home-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  max-height: 90vh;
+  max-width: 50vw;
+  animation: right_to_left_transition_1 1s ease-in-out forwards 1;
+  animation-delay: 0.25s;
+  animation-timing-function: cubic-bezier(0.35, -0.07, 0.73, 0.94);
+}
+
+#home-overlay2 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  max-height: 90vh;
+  /* display: none; */
+  max-width: 20vw;
+  animation: right_to_left_transition_2 1s ease-in-out forwards 1;
+  animation-delay: 0.25s;
+  animation-timing-function: cubic-bezier(0.35, -0.07, 0.73, 0.94);
+}
+
+.box .right {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.box .right img {
+  width: 95%;
+  min-width: 40vw;
+}
+
+.box .right,
+.box .left {
+  min-width: 50%;
+  z-index: 2;
+  flex-grow: 1;
+}
+
+.box .left {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  flex-direction: column;
+}
+
+.box .left .menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.box .left .menu a:nth-child(1):hover {
+  letter-spacing: 1px;
+  padding: 10px 20px;
+}
+
+.box .left .menu a:nth-child(1) {
+  padding: 10px 26px;
+}
+
+.box .left .menu a:nth-child(2):hover {
+  letter-spacing: 1px;
+  padding: 10px 20px;
+}
+
+.box .left .menu a:nth-child(2) {
+  padding: 10px 25.5px;
+}
+
+.box .left .menu a:hover {
+  text-shadow: 0px 0px 6px rgb(0, 0, 0);
+  background: transparent;
+}
+
+.box .left .menu a {
+  text-decoration: none;
+  font-family: "Poiret One", cursive;
+  color: white;
+  font-size: 1.75rem;
+  background-color: rgba(7, 7, 7, 0.15);
+
+  border: 2px outset rgba(255, 255, 255, 0.7);
+}
+
+.button-morphism:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.button-morphism {
+  padding: 5px 10px;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.15);
+  transition: all 0.75s ease-in-out;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(30px);
+
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.box .right h3 .logo {
+  text-shadow: 0px 0px 10px rgb(255, 255, 255), 0 0 rgba(255, 255, 255, 0.75),
+    0px 0px 5px rgba(0, 0, 0, 0.5);
+}
+
+.box .right h3 {
+  font-family: "Ubuntu", sans-serif;
+  text-shadow: 0 0 7.5px rgba(0, 0, 0, 0.75);
+  font-size: 1.75rem;
+}
+
+.logo {
+  font-family: Aquire, sans-serif;
+}
+
+h1.logo.heading-logo {
+  text-align: center;
+  border: none;
+}
+
+h1.logo {
+  color: white;
+  font-size: 3.5rem;
+  border-top: 2px solid rgb(0, 176, 255);
+  border-bottom: 2px solid rgb(0, 176, 255);
+
+  padding: 10px;
+}
+
+.features {
+  color: white;
+  padding: 2% 1%;
+  margin-top: 25px;
+  padding-bottom: 0;
+  border-bottom: 2px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.features .about {
+  width: 70%;
+}
+
+.features .about h4,
+.cards-parent-box .h4-padding h4 {
+  font-size: 2.5rem;
+  padding: 0.25% 2%;
+
+  font-weight: 500;
+  border-left: 3px solid rgb(0, 176, 255);
+  font-family: "Georama", sans-serif;
+}
+
+.features .about ul {
+  list-style: square;
+  padding: 2%;
+  font-size: 1.45rem;
+  font-family: "Baloo 2", cursive;
+}
+
+.features .about ul li {
+  margin: 2% 0;
+}
+
+.cards-parent-box .h4-padding {
+  padding: 0 2%;
+  margin-top: 2%;
+}
+
+.cards-div {
+  margin: 3% 0;
+  flex-wrap: wrap;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.card {
+  width: 32%;
+  background-color: rgb(22, 22, 22);
+  margin: 1% 0;
+  padding: 2%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+}
+
+.card h5 i {
+  display: inline;
+}
+
+.card h5 {
+  font-family: "Comfortaa", cursive;
+  width: 100%;
+  text-transform: capitalize;
+  color: rgb(251, 188, 5);
+  font-size: 1.75rem;
+  text-align: center;
+  padding-bottom: 3%;
+  border-bottom: 2px solid white;
+}
+
+.card p {
+  font-family: "Montserrat", sans-serif;
+  margin-top: 5%;
+  color: rgb(0, 176, 255);
+  font-size: 2.2rem;
+  text-align: center;
+}
+
+/* Main content CSS ends here */
+
+/* Footer CSS */
+
+footer {
+  font-size: 1.6rem;
+  border-top: 2px solid black;
+  background-color: rgba(22, 22, 22, 0.75);
+  color: rgb(251, 188, 5);
+  padding: 1%;
+  text-align: center;
+}
+
+/* Responsove CSS */
+
+@media (max-width: 1045px) {
+  .box .right img {
+    width: 85%;
+  }
+
+  .card h5,
+  .card h5 i {
+    font-size: 1.5rem;
+  }
+
+  .card p {
+    font-size: 2rem;
+  }
+
+  h3 {
+    font-size: 1.7rem;
+  }
+
+  .features .about h4,
+  .cards-parent-box .h4-padding h4 {
+    font-size: 2.25rem;
+    padding: 0.25% 1%;
+  }
+
+  .features .about ul {
+    font-size: 1.5rem;
+  }
+
+  footer {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 905px) {
+  .box .right img {
+    width: 75%;
+  }
+
+  .box {
+    flex-direction: column;
+  }
+
+  .card h5,
+  .card h5 i {
+    font-size: 1.25rem;
+  }
+
+  .card p {
+    font-size: 1.75rem;
+  }
+
+  .box .left .menu a {
+    font-size: 1.5rem;
+  }
+
+  .features .about h4,
+  .cards-parent-box .h4-padding h4 {
+    font-size: 2.1rem;
+  }
+
+  .features .about ul {
+    font-size: 1.4rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  #down-arrow {
+    width: 65px;
+  }
+
+  footer {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .box .right h3 {
+    font-size: 1.5rem;
+  }
+
+  .box .right img {
+    width: 75%;
+  }
+
+  .poster {
+    flex-direction: column;
+    padding-left: 0;
+  }
+
+  .poster svg {
+    width: 50%;
+  }
+
+  .card h5,
+  .card h5 i {
+    font-size: 1rem;
+  }
+
+  .card p {
+    font-size: 1.6rem;
+  }
+
+  .features .about h4,
+  .cards-parent-box .h4-padding h4 {
+    font-size: 1.9rem;
+  }
+
+  .features {
+    flex-direction: column;
+  }
+
+  .features svg {
+    width: 60%;
+  }
+
+  .features .about ul {
+    font-size: 1.2rem;
+  }
+
+  .features .about {
+    width: 90%;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  #down-arrow {
+    width: 60px;
+  }
+
+  footer {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 635px) {
+  .box .right img {
+    width: 70%;
+  }
+
+  .box .left .menu a {
+    font-size: 1.3rem;
+  }
+
+  .card h5,
+  .card h5 i {
+    font-size: 0.9rem;
+  }
+
+  .card p {
+    font-size: 1.4rem;
+  }
+
+  .features .about h4,
+  .cards-parent-box .h4-padding h4 {
+    font-size: 1.8rem;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+  }
+
+  .poster svg {
+    width: 60%;
+  }
+
+  #down-arrow {
+    width: 55px;
+  }
+
+  footer {
+    font-size: 1.1rem;
+  }
+
+  .features svg {
+    width: 65%;
+  }
+}
+
+@media (max-width: 590px) {
+  .box .right h3 {
+    font-size: 1.35rem;
+  }
+
+  .card h5,
+  .card h5 i {
+    font-size: 0.8rem;
+  }
+
+  .card p {
+    font-size: 1.3rem;
+  }
+
+  .card {
+    width: 45%;
+  }
+
+  .features .about h4,
+  .cards-parent-box .h4-padding h4 {
+    font-size: 1.6rem;
+  }
+
+  .features .about ul {
+    font-size: 1.1rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+
+  .box .left .menu a {
+    font-size: 1.2rem;
+  }
+
+  #down-arrow {
+    width: 50px;
+  }
+
+  footer {
+    font-size: 1rem;
+  }
+
+  .poster svg {
+    width: 70%;
+  }
+
+  .features svg {
+    width: 75%;
+  }
+}
+
+@media (max-width: 485px) {
+  .card h5,
+  .card h5 i {
+    font-size: 0.75rem;
+  }
+
+  .card p {
+    font-size: 1.25rem;
+  }
+
+  .features .about h4,
+  .cards-parent-box .h4-padding h4 {
+    font-size: 1.4rem;
+  }
+
+  .features .about ul {
+    font-size: 0.95rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+  }
+
+  .box .left .menu a {
+    font-size: 1rem;
+  }
+
+  #down-arrow {
+    width: 45px;
+  }
+
+  .card {
+    width: 48%;
+  }
+
+  footer {
+    font-size: 0.9rem;
+  }
+
+  .poster svg {
+    width: 75%;
+  }
+
+  .features svg {
+    width: 90%;
+  }
+}
+
+@media (max-width: 367px) {
+  .features .about h4,
+  .cards-parent-box .h4-padding h4 {
+    font-size: 1.1rem;
+  }
+
+  .card {
+    width: 49%;
+  }
+}
+
+@media (max-width: 320px) {
+  .card {
+    width: 75%;
+  }
+}
+
+@keyframes right_to_left_transition_1 {
+  0% {
+    right: -100vw;
+    top: -100vh;
+  }
+
+  100% {
+    right: 0;
+    top: 0;
+  }
+}
+
+@keyframes right_to_left_transition_2 {
+  0% {
+    left: -75vw;
+    bottom: -75vh;
+  }
+
+  100% {
+    left: 0;
+    bottom: 0;
+  }
+}

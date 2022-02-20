@@ -1,0 +1,730 @@
+@import url("https://fonts.googleapis.com/css2?family=Georama:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2&family=Comfortaa:wght@300&family=Georama:wght@300&family=Josefin+Sans:wght@300;400&family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poiret+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Mukta&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --theme-blue: #00b0ff;
+  --red-color: rgb(255, 36, 36);
+}
+
+body {
+  overflow: hidden;
+}
+
+main {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* width: 100vw; */
+  background-color: rgb(32, 32, 32);
+}
+
+.no-display {
+  display: none;
+}
+
+/* Meeting Video's CSS starts here */
+
+.main_container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+}
+
+.videos_gallery {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+}
+
+#my-video-container video {
+  max-height: 50vh;
+  border-radius: 25px;
+  box-shadow: 0px 0px 4.6px rgba(255, 255, 255, 0.17),
+    0px 0px 8.3px rgba(255, 255, 255, 0.203),
+    0px 0px 15.5px rgba(255, 255, 255, 0.244);
+}
+
+#my-video-container {
+  width: 100%;
+  min-height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+#other-participants-video-container video {
+  border-radius: 20px;
+  max-height: 30vh;
+  box-shadow: 0px 0px 2.5px rgba(255, 255, 255, 0.137),
+    0px 0px 4.6px rgba(255, 255, 255, 0.17),
+    0px 0px 8.3px rgba(255, 255, 255, 0.203);
+}
+
+#other-participants-video-container {
+  /* min-height: 35vh; */
+  padding: 0 2.5vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  /* max-width: 100%; */
+  overflow-x: auto;
+}
+
+#video-grid {
+  display: flex;
+  flex-wrap: wrap;
+
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+video {
+  /* aspect-ratio: 16/9; */
+  margin: 2% 0;
+
+  padding: 0;
+}
+
+/* Meeting Video's CSS ends here  */
+
+/* Bottom Control Panel CSS starts here */
+
+.control-panel {
+  position: absolute;
+  font-family: "Mukta", sans-serif;
+  top: 50%;
+  left: 0;
+  z-index: 5;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 80vh;
+  backdrop-filter: blur(12px) saturate(153%);
+  -webkit-backdrop-filter: blur(12px) saturate(153%);
+  /* background-color: rgba(17, 37, 40, 0.84); */
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  border-radius: 0 20px 20px 0;
+  padding: 0 10px;
+  margin: auto;
+  color: white;
+  font-size: 1.75rem;
+  background: rgb(10, 10, 10);
+  flex-direction: column;
+  box-shadow: 0px 0px 5px rgba(8, 8, 8, 1), -2px -2px 5px rgba(2, 2, 2, 0.5),
+    inset -2px -2px 10px rgba(39, 39, 39, 0.9);
+}
+
+.bot-box.active-bot svg:nth-child(2) {
+  display: block;
+}
+
+.bot-box.active-bot svg:nth-child(1) {
+  display: none;
+}
+
+.bot-box svg:nth-child(1) {
+  filter: opacity(0.5);
+}
+
+.bot-box svg:nth-child(2) {
+  display: none;
+}
+
+.bot-box {
+  cursor: pointer;
+  margin-top: -1.1% !important;
+}
+
+.control-panel i,
+.participant-container i {
+  cursor: pointer;
+  color: var(--theme-blue);
+}
+
+.control-panel i.red,
+i.fa-video-slash,
+i.fa-microphone-slash {
+  color: var(--red-color);
+}
+
+.control-panel i.fa-robot {
+  color: rgba(0, 168, 64, 0.5);
+}
+
+.control-panel i.fa-robot.active {
+  color: rgb(0, 255, 98);
+}
+
+.control-panel div {
+  display: flex;
+  margin: 1%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.control-panel div span {
+  font-size: 1.2rem;
+  margin: 5px 0;
+  display: block;
+}
+
+.control-panel i:hover {
+  opacity: 0.5;
+}
+
+/* Bottom Control Panel CSS ends here */
+
+/* Messages Container Starts here */
+
+.participant-container,
+.input-file-div {
+  transition: all 0.75s ease-out;
+  background-color: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 50%;
+
+  backdrop-filter: blur(10px);
+
+  border-radius: 20px;
+  width: 50vw;
+  min-height: 75vh;
+
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  z-index: 10;
+  padding: 20px;
+}
+
+.messages_parent_div {
+  color: white;
+  background-color: rgb(20, 20, 20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 25%;
+  border-left: 2px solid rgba(255, 255, 255, 1);
+}
+
+.messages_container {
+  flex-grow: 1;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.input_container i {
+  color: var(--theme-blue);
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.input_container {
+  width: 100%;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.input_container input {
+  resize: none;
+  width: 80%;
+  font-family: "Ubuntu", sans-serif;
+  border: none;
+  outline: none;
+  border-radius: 0px;
+  padding: 0.5% 1%;
+  border-radius: 35px 0 35px 35px;
+  background-color: rgb(196, 196, 196);
+  font-size: 1.25rem;
+  padding: 3%;
+  overflow: auto;
+}
+
+#message-inbox {
+  list-style: none;
+  font-size: 1.25rem;
+}
+
+#message-inbox li {
+  font-family: "Comfortaa", cursive;
+  overflow: auto;
+  margin: 3%;
+  padding: 2%;
+  width: 75%;
+}
+
+#message-inbox li.sent {
+  border: 4px solid grey;
+  margin-left: auto;
+  border-radius: 20px 0 20px 20px;
+}
+
+#message-inbox li.recieved {
+  border: 4px solid white;
+
+  border-radius: 0 20px 20px 20px;
+}
+
+#message-inbox li strong::after {
+  content: ":";
+  margin-right: 5px;
+}
+
+#message-inbox li span {
+  color: white;
+}
+
+#message-inbox li strong {
+  color: rgb(156, 156, 156);
+  font-family: "Titillium Web", sans-serif;
+  text-transform: capitalize;
+}
+
+div h2 {
+  /* font-family: "Georama", sans-serif; toedit */
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 1.75rem;
+  text-transform: uppercase;
+  padding: 1%;
+  text-align: center;
+  color: var(--theme-blue);
+  border-bottom: 2px solid white;
+}
+
+/* Message Container CSS Ends here */
+
+/* Participant's box CSS starts here */
+
+.participant-container ul {
+  padding: 2%;
+  font-family: "Comfortaa", cursive;
+  overflow-y: auto;
+  max-height: 80vh;
+  font-size: 1.5rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  list-style: none;
+}
+
+.participant-container i.fa-times-circle,
+.input-file-div i.fa-times-circle {
+  font-size: 1.75rem;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: var(--red-color);
+}
+
+.participant-container.inactive {
+  top: -100vh;
+}
+
+.participant-container li {
+  height: 5vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.participant-container li span {
+  width: 40vw;
+  text-align: left;
+  display: inline-block;
+}
+
+.fa-clipboard-check {
+  opacity: 0.25;
+}
+
+.fa-clipboard-check.present {
+  opacity: 1;
+  color: rgb(0, 255, 0);
+}
+
+.participant-li:last-child {
+  border-bottom: none;
+}
+
+.participant-li {
+  border-bottom: 2px solid white;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.participant-li div {
+  margin: 10px;
+  width: 50px;
+}
+
+.fa-robot {
+  opacity: 0.25;
+}
+
+.fa-robot.attentive {
+  color: rgb(0, 255, 0);
+  opacity: 1;
+}
+
+/* Participant Panel CSS ends here */
+
+/* Miscellaneous CSS */
+.meeting-details {
+  font-family: "Montserrat", sans-serif;
+  background-color: rgba(32, 32, 32, 0.75);
+  border: 2px solid white;
+  border-top: none;
+  position: absolute;
+  top: 0;
+  color: white;
+  padding: 0.75%;
+  border-radius: 0 0 10px 10px;
+  font-size: 1.15rem;
+  padding-top: 1%;
+  left: 50%;
+  transform: translate(-50%);
+
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(30px);
+}
+
+.notification {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(44, 44, 44, 0.75);
+  color: white;
+  border-radius: 30px;
+  padding: 2%;
+}
+
+.notification h4 {
+  font-size: 1.5rem;
+}
+
+/* Image Upload */
+
+div.input-file-div.inactive {
+  display: none;
+}
+
+div.input-file-div.inactive {
+  top: 250vh;
+}
+
+div.input-file-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.input-file-div button,
+.input-file-div p {
+  font-size: 1.25rem;
+  font-family: "Comfortaa", cursive;
+}
+
+.input-file-div button {
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+  background: transparent;
+  outline: none;
+  padding: 2.5px 15px;
+  font-family: "Titillium Web", sans-serif;
+  border: 2px solid white;
+  color: white;
+  border-radius: 15px;
+}
+
+.input-file-div button:hover {
+  border-color: var(--theme-blue);
+}
+
+#input-file-container input {
+  font-family: "Comfortaa", cursive;
+  margin: 10px 0;
+  width: max(50%, min(350px, 100%));
+}
+
+#input-file-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* Responsive CSS */
+
+@media (max-width: 905px) {
+  .participant-container {
+    width: 70vw;
+  }
+
+  .participant-container ul,
+  #message-inbox {
+    font-size: 1.35rem;
+  }
+
+  div h2,
+  .participant-container i.fa-times-circle,
+  .input-file-div i.fa-times-circle,
+  .messages_parent_div i.fa-times-circle {
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+  }
+
+  .input_container i {
+    font-size: 1.4rem;
+  }
+
+  .input-file-div .flex-div button,
+  .input-file-div p {
+    font-size: 1.1rem;
+  }
+
+  .meeting-details {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .messages_parent_div {
+    width: 35%;
+  }
+
+  .control-panel {
+    padding: 0 7.5px;
+    font-size: 1.5rem;
+  }
+
+  .control-panel div span {
+    font-size: 1rem;
+  }
+
+  .participant-container {
+    width: 75vw;
+  }
+
+  .participant-container ul,
+  #message-inbox {
+    font-size: 1.25rem;
+  }
+
+  .participant-li div {
+    margin: 0;
+  }
+
+  div h2,
+  .participant-container i.fa-times-circle,
+  .input-file-div i.fa-times-circle,
+  .messages_parent_div i.fa-times-circle {
+    font-size: 1.4rem;
+    line-height: 1.4rem;
+  }
+
+  .input_container i {
+    font-size: 1.3rem;
+  }
+
+  video {
+    width: 40vw;
+  }
+
+  .input-file-div .flex-div button,
+  .input-file-div p {
+    font-size: 1rem;
+  }
+
+  .input-file-div .flex-div div input {
+    width: 75%;
+    margin: 10px 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .messages_parent_div {
+    width: 45%;
+  }
+
+  .participant-container ul,
+  #message-inbox {
+    font-size: 1.2rem;
+  }
+
+  div h2,
+  .participant-container i.fa-times-circle,
+  .input-file-div i.fa-times-circle,
+  .messages_parent_div i.fa-times-circle {
+    font-size: 1.25rem;
+    line-height: 1.25rem;
+  }
+
+  .input-file-div .flex-div button,
+  .input-file-div p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 490px) {
+  div h2,
+  .participant-li {
+    border-bottom: 1px solid white;
+  }
+
+  .meeting-details {
+    font-size: 1rem;
+  }
+
+  #bot-div {
+    transform: scale(0.9);
+  }
+
+  .control-panel {
+    padding: 0 5px;
+
+    font-size: 1.4rem;
+  }
+
+  .participant-container {
+    width: 80vw;
+  }
+
+  .participant-container ul,
+  #message-inbox {
+    font-size: 1rem;
+  }
+
+  div h2,
+  .participant-container i.fa-times-circle,
+  .input-file-div i.fa-times-circle,
+  .messages_parent_div i.fa-times-circle {
+    font-size: 1rem;
+    line-height: 1rem;
+  }
+
+  .input_container i {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 380px) {
+  #bot-div {
+    transform: scale(0.8);
+  }
+
+  .control-panel div span {
+    font-size: 0.8rem;
+  }
+
+  .meeting-details {
+    font-size: 0.9rem;
+  }
+
+  .participant-container ul,
+  #message-inbox {
+    font-size: 0.75rem;
+  }
+
+  .participant-container {
+    width: 90vw;
+  }
+
+  .input_container i {
+    font-size: 1.1rem;
+  }
+
+  /* video {
+    width: 48vw;
+  } */
+
+  .input-file-div .flex-div button,
+  .input-file-div p {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .meeting-details {
+    font-size: 0.75rem;
+  }
+
+  #bot-div {
+    transform: scale(0.7);
+  }
+
+  .control-panel div span {
+    font-size: 0.65rem;
+  }
+
+  .control-panel {
+    font-size: 1.1rem;
+  }
+
+  div h2,
+  .participant-container i.fa-times-circle,
+  .input-file-div i.fa-times-circle,
+  .messages_parent_div i.fa-times-circle {
+    font-size: 0.9rem;
+    line-height: 0.9rem;
+  }
+
+  .input_container i {
+    font-size: 1rem;
+  }
+
+  /* video {
+    width: 49vw;
+  } */
+
+  .participant-container ul,
+  #message-inbox {
+    font-size: 0.7rem;
+  }
+}
+
+#input-file-container input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+#input-file-container input::before {
+  content: "Upload Image";
+  display: inline-block;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  font-weight: 700;
+  border: 2px solid white;
+  padding: 7.5px 10px;
+  border-radius: 10px;
+}

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="form.css" />
+    <script
+      src="https://kit.fontawesome.com/6d82381473.js"
+      crossorigin="anonymous"
+    ></script>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Meeting</title>
+    <style>
+      #meetingId {
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body class="bg2 bg">
+    <nav>
+      <h1 class="logo heading-logo">Attentive</h1>
+      <a href="/"><i class="fas fa-home"></i></a>
+    </nav>
+    <main>
+      <form method="POST" action="/create_room">
+        <div id="meeting-id">
+          <span> Meeting Id: </span>
+          <input
+            type="text"
+            readonly
+            name="meetingId"
+            id="meetingId"
+            value="<%=meetingId %>"
+          />
+        </div>
+        <div id="password">
+          <span> Password: </span>
+          <input
+            required
+            type="text"
+            name="meetingPassword"
+            minlength="6"
+            maxlength="12"
+          />
+        </div>
+        <div id="joining-name">
+          <span> Name: </span>
+          <input required type="text" name="userName" id="" maxlength="25" />
+        </div>
+        <div id="ss-frequency">
+          <span> Frequency of taking snapshots: </span>
+          <p>
+            1 snapshot per
+            <input
+              required
+              type="text"
+              name="frequency"
+              id=""
+              min="2"
+              max="30"
+            />
+            minutes
+          </p>
+        </div>
+        <div id="min-time">
+          <span> Minumum number of time a student must be present: </span>
+          <p>
+            <input
+              required
+              type="number"
+              name="minTime"
+              id=""
+              min="0"
+              max="100"
+            />
+            times
+          </p>
+        </div>
+        <div class="">
+          <button type="submit">Create Room <i class="fas fa-pen"></i></button>
+        </div>
+      </form>
+    </main>
+    <footer>© 2022 Attentive All Rights Reserved</footer>
+    <script>
+      document.getElementById("meetingId").value = "<%=meetingId %>";
+      let formDimensions = document
+        .getElementsByTagName("form")[0]
+        .getBoundingClientRect();
+      if (window.innerHeight - 80 >= formDimensions.bottom) {
+        document
+          .getElementsByTagName("footer")[0]
+          .classList.add("footer-fixed");
+      }
+      window.addEventListener("resize", () => {
+        formDimensions = document
+          .getElementsByTagName("form")[0]
+          .getBoundingClientRect();
+        if (window.innerHeight - 80 >= formDimensions.bottom) {
+          document
+            .getElementsByTagName("footer")[0]
+            .classList.add("footer-fixed");
+        } else {
+          document
+            .getElementsByTagName("footer")[0]
+            .classList.remove("footer-fixed");
+        }
+      });
+    </script>
+  </body>
+</html>

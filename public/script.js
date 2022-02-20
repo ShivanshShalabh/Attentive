@@ -1,4 +1,6 @@
-const NICKNAME = window.prompt("Enter your name: ");
+let send_image_data;
+let markPresent;
+let botClickFunc;
 var PEER_ID = ' ';
 
 const socket = io('/');
@@ -39,8 +41,16 @@ navigator.mediaDevices.getUserMedia({
 
 peer.on('open', id => {
     socket.emit('join-room', ROOM_ID, id, NICKNAME);
-
+    document.getElementById('fa-microphone').addEventListener('click', () => muteUnmute(id));
+    document.getElementById('fa-video').addEventListener('click', () => videoOnOff(id));
     document.getElementById('leave-btn').addEventListener('click', () => disconnect(id));
+    markPresent = () => {
+        socket.emit('markPresent', ROOM_ID, id);
+    };
+    botDiv.addEventListener('click', () => {
+        socket.emit('botStatusChange', ROOM_ID, id);
+    });
+    send_image_data = base64_val => socket.emit('process_image', ROOM_ID, id, base64_val);
     socket.emit('user-joined', ROOM_ID, NICKNAME, id);
 });
 const connectToNewUser = (userID, stream) => {
@@ -95,26 +105,6 @@ const scroollToBottom = () => {
 
 // Mute video off
 
-const muteUnmute = () => {
-    if (myVideoStream.getAudioTracks()[0].enabled) {
-        myVideoStream.getAudioTracks()[0].enabled = false;
-    } else {
-        myVideoStream.getAudioTracks()[0].enabled = true;
-    }
-};
-
-document.getElementById('fa-microphone').addEventListener('click', () => {
-    document.getElementById('fa-microphone').classList.toggle('fa-microphone-slash');
-    muteUnmute();
-});
-
-const videoOnOff = () => {
-    if (myVideoStream.getVideoTracks()[0].enabled) {
-        myVideoStream.getVideoTracks()[0].enabled = false;
-    } else {
-        myVideoStream.getVideoTracks()[0].enabled = true;
-    }
-};
 const resetParticipants = () => document.getElementById('participant-list').innerHTML = '';
 const func = () => { };
 func();
@@ -122,27 +112,73 @@ socket.on('addParticipant', name => {
     resetParticipants();
 
     name.forEach(element => {
-        appendNameParticipant(element[0]);
+        appendNameParticipant(element);
     });
 });
 socket.on('removeParticipant', (name, userId) => {
     resetParticipants();
-
     name.forEach(element => {
-        appendNameParticipant(element[0]);
+        appendNameParticipant(element);
     });
     removeVideo(userId);
+});
+socket.on('changeMuteStatus', (userId, unmuteStatus) => {
+    console.log(`someone ${unmuteStatus ? 'unmuted' : 'muted'}`);
+    document.getElementById(`p${userId}`).children[4].children[0].classList.toggle('fa-microphone-slash');
+    console.log(`p${userId}`);
+});
+socket.on('changeVideoStatus', (userId, unmuteStatus) => {
+    console.log(`someone ${unmuteStatus ? 'unmuted' : 'muted'}`);
+    document.getElementById(`p${userId}`).children[3].children[0].classList.toggle('fa-video-slash');
+});
+socket.on('markPresent', (userId) => {
+    console.log("uwu");
+    document.getElementById(`p${userId}`).children[2].children[0].classList.add('present');
+});
+
+socket.on('BotStatusChange', (userId) => {
+    console.log("owo");
+    document.getElementById(`p${userId}`).children[1].children[0].classList.toggle('attentive');
+});
+socket.on('imageProcessed', (automl_response) => {
+    console.log(automl_response);
 });
 const removeVideo = (userId) => {
     document.getElementById(userId).remove();
 };
 const appendNameParticipant = (name) => {
     let newParticipant = document.createElement('li');
-    newParticipant.innerHTML = `<span>${name}</span> <i class="fas fa-video fa-video-slash" id="fa-video"></i>
-    <i class="fas fa-microphone fa-microphone-slash" id="fa-microphone"></i>`;
+    newParticipant.setAttribute('id', `p${name[1]}`);
+    newParticipant.classList.add('participant-li');
+    newParticipant.innerHTML = `<span>${name[0]}</span>
+<div><i class="fas fa-robot"></i></div>
+<div><i class="fas fa-clipboard-check"></i></div>
+<div><i class="fas fa-video fa-video-slash"></i></div>
+<div><i class="fas fa-microphone fa-microphone-slash"></i></div>`;
     document.getElementById('participant-list').appendChild(newParticipant);
 };
 const disconnect = (PEER_ID_2) => {
     socket.emit('leave-meeting', ROOM_ID, PEER_ID_2);
     socket.emit('leave-room', ROOM_ID, PEER_ID_2);
+};
+const muteUnmute = (id) => {
+    document.getElementById('fa-microphone').classList.toggle('fa-microphone-slash');
+    if (myVideoStream.getAudioTracks()[0].enabled) {
+        socket.emit('audio-change', ROOM_ID, id, false);
+        myVideoStream.getAudioTracks()[0].enabled = false;
+    } else {
+        socket.emit('audio-change', ROOM_ID, id, true);
+        myVideoStream.getAudioTracks()[0].enabled = true;
+    }
+};
+const videoOnOff = (id) => {
+    document.getElementById('fa-video').classList.toggle('fa-video-slash');
+
+    if (myVideoStream.getVideoTracks()[0].enabled) {
+        socket.emit('video-change', ROOM_ID, id, false);
+        myVideoStream.getVideoTracks()[0].enabled = false;
+    } else {
+        socket.emit('video-change', ROOM_ID, id, true);
+        myVideoStream.getVideoTracks()[0].enabled = true;
+    }
 };

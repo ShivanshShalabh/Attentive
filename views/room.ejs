@@ -1,82 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <!-- <link rel="stylesheet" href="room.css"> -->
+    <link rel="stylesheet" href="room.css" />
+    <script
+      src="https://kit.fontawesome.com/6d82381473.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js"
+      integrity="sha512-mz0EI+Ay1uIJP7rZEX8C/JlTAcHRIQ8Sny4vxmmj8MSzDJgG9NxxY2pUmOGv1lO7imFIFMyjjCzEXEywNgaUdQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
 
-<head>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://kit.fontawesome.com/6d82381473.js" crossorigin="anonymous"></script>
-    <meta charset="UTF-8">
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"
+    ></script>
+    <meta charset="UTF-8" />
     <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AttendoBot</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meeting | Attentive</title>
     <script src="/socket.io/socket.io.js"></script>
+    
     <script>
-        const ROOM_ID = "<%= roomId %>";
+      const ROOM_ID = "<%= user.roomId %>";
+      const NICKNAME = "<%= user.userName %>";
+      const FREQUENCY = parseInt("<%= user.frequency %>");
+      const minTime = parseInt("<%= user.minTime %>");
     </script>
-</head>
+  </head>
 
-<body>
+  <body>
+    <!-- Meeting id and Password -->
+    <div class="meeting-details">
+      <div class="meeting-id">
+        Room Id:
+        <span> <%= user.roomName %> </span>
+      </div>
+      <div class="meeting-password">
+        Password:
+        <span> <%= user.roomPassword %> </span>
+      </div>
+    </div>
+    <!-- Error Message Notification -->
+    <div class="no-display notification" id="notification-div">
+      <h4 id="notification-text"></h4>
+    </div>
+    <!-- For bot functionality -->
+    <canvas id="canvas" class="no-display"></canvas>
     <main>
-        <div class="left_container">
-            <div class="videos_gallery">
-                <div id="video-grid">
-                </div>
-            </div>
-            <div class="control-panel">
-                <div class="">
-                    <i class="fas fa-video fa-video-slash" id="fa-video"></i>
-                    <span>Video Off</span>
-                </div>
-                <div class="">
-                    <i class="fas fa-robot" id="ai-robo"></i>
-                    <span>Bot Inactive</span>
-                </div>
-                <div class="">
-                    <i class="fas fa-microphone fa-microphone-slash" id="fa-microphone"></i>
-                    <span>Unmute</span>
-                </div>
-                <div class="">
-                    <i class="fas fa-users" id="participant-toggle-btn"></i>
-                    <span>Participants</span>
-                </div>
-                <div class="">
-                    <i class="fas fa-comment-alt" id="chat-toggle-btn"></i>
-                    <span>Chat</span>
-                </div>
-                <div class="">
-                    <i class="fas fa-sign-out-alt leave-btn red" id="leave-btn"></i>
-                    <span>Leave</span>
-                </div>
-            </div>
-
+      <!-- Video and Control Panel -->
+      <div class="main_container">
+        <!-- Video Gallery -->
+        <div class="videos_gallery">
+          <div id="my-video-container"></div>
+          <div id="other-participants-video-container"></div>
         </div>
+
+        <!-- Message Box -->
         <div class="messages_parent_div inactive" id="chat-div">
-            <i class="fas fa-times-circle" id="close-chat-panel"></i>
-            <h2>Chats</h2>
-            <div class="messages_container">
-                <ul id="message-inbox">
-
-                </ul>
-            </div>
-            <div class="input_container">
-
-                <input type="text" name="" id="message-box">
-                <i class="fas fa-paper-plane" id="message-submit-btn"></i>
-            </div>
-        </div>
-        <div class="participant-container inactive" id="participant-div">
-            <i class="fas fa-times-circle" id="close-participant-panel"></i>
-            <h2>Participants</h2>
-            <ul id="participant-list">
-
+          <h2>Chats</h2>
+          <div class="messages_container">
+            <ul id="message-inbox">
+              <!-- Messages will be added here through JS as li -->
             </ul>
+          </div>
+          <!-- Message input container -->
+          <div class="input_container">
+            <input type="text" name="" id="message-box" />
+            <i class="fas fa-paper-plane" id="message-submit-btn"></i>
+          </div>
         </div>
-    </main>
-    <script src="script.js"></script>
-    <script src="meeting.js"></script>
-    <script src="room.js"></script>
-</body>
+      </div>
+      <!-- Meeting Control Panel -->
+      <div class="control-panel">
+        <div id="control-panel-video">
+          <i class="fas fa-video fa-video-slash" id="fa-video"></i>
+          <!-- <span id="control-panel-video-span">Start Video</span> -->
+        </div>
+        <div id="control-panel-audio">
+          <i
+            class="fas fa-microphone fa-microphone-slash"
+            id="fa-microphone"
+          ></i>
+          <!-- <span id="control-panel-audio-span">Unmute</span> -->
+        </div>
+        <div class="bot-box" id="bot-div">
+          <svg
+            width="57"
+            height="48"
+            viewBox="0 0 57 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="28.4385" cy="24.4198" r="22.5834" fill="#FBBC05" />
+            <path
+              d="M49.3316 15.0225C49.1325 14.9932 48.9308 14.9746 48.729 14.9614C51.0217 20.2487 51.1806 26.2189 49.1724 31.6209C49.3741 31.597 49.5732 31.5651 49.7723 31.5279C51.7165 31.151 53.4639 30.0959 54.7035 28.5504C55.943 27.0049 56.5943 25.0693 56.5415 23.0883C56.4886 21.1072 55.7349 19.2093 54.4146 17.7322C53.0943 16.2552 51.2931 15.295 49.3316 15.0225V15.0225Z"
+              fill="black"
+            />
+            <path
+              d="M7.81535 14.9614C7.61352 14.9746 7.41184 14.9932 7.21274 15.0225C5.25126 15.295 3.45007 16.2553 2.12981 17.7323C0.809544 19.2093 0.0558814 21.1073 0.00298604 23.0883C-0.0499094 25.0693 0.601402 27.0048 1.84096 28.5503C3.08052 30.0958 4.82789 31.151 6.77202 31.5279C6.97112 31.5651 7.17022 31.597 7.37191 31.6209C5.3639 26.2189 5.52281 20.2488 7.81535 14.9614V14.9614Z"
+              fill="black"
+            />
+            <path
+              d="M49.3318 15.0225C47.1448 9.79473 43.0941 5.56717 37.9666 3.16105C32.8391 0.754934 27.0009 0.34207 21.5863 2.00267C16.1716 3.66327 11.5671 7.27877 8.66718 12.1468C5.76731 17.0148 4.77915 22.7877 5.89469 28.344C7.01023 33.9003 10.1498 38.8433 14.7035 42.2126C19.2572 45.582 24.8998 47.1372 30.5352 46.576C36.1706 46.0149 41.3964 43.3775 45.1974 39.1762C48.9983 34.9749 51.103 29.5097 51.1025 23.8424C51.1014 20.8141 50.4995 17.8162 49.3318 15.0225ZM49.1726 31.6209C47.2307 36.8446 43.4053 41.1517 38.4493 43.6946C33.4933 46.2374 27.7657 46.8317 22.3938 45.3606C17.0219 43.8895 12.3948 40.4595 9.42325 35.7456C6.45165 31.0318 5.35078 25.3756 6.33735 19.8903C7.32392 14.4049 10.3265 9.48782 14.754 6.1067C19.1815 2.72558 24.7133 1.12536 30.2607 1.62099C35.808 2.11662 40.9691 4.6722 44.7281 8.78475C48.487 12.8973 50.5716 18.2689 50.5716 23.8424C50.5708 26.4978 50.097 29.1318 49.1726 31.6209Z"
+              fill="black"
+              stroke="black"
+            />
+            <path
+              d="M39.9529 18.662H16.5917C15.3596 18.662 14.178 19.1518 13.3067 20.0237C12.4355 20.8955 11.946 22.078 11.946 23.311C11.946 24.544 12.4355 25.7265 13.3067 26.5984C14.178 27.4703 15.3596 27.9601 16.5917 27.9601H39.9529C41.185 27.9601 42.3666 27.4703 43.2379 26.5984C44.1091 25.7265 44.5986 24.544 44.5986 23.311C44.5986 22.078 44.1091 20.8955 43.2379 20.0237C42.3666 19.1518 41.185 18.662 39.9529 18.662V18.662Z"
+              fill="black"
+            />
+          </svg>
 
+          <svg
+            width="57"
+            height="48"
+            viewBox="0 0 57 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="28.4385" cy="24.4198" r="22.5834" fill="#FBBC05" />
+            <path
+              d="M49.3316 15.0225C49.1325 14.9932 48.9308 14.9746 48.729 14.9614C51.0217 20.2487 51.1806 26.2189 49.1724 31.6209C49.3741 31.597 49.5732 31.5651 49.7723 31.5279C51.7165 31.151 53.4639 30.0959 54.7035 28.5504C55.943 27.0049 56.5943 25.0693 56.5415 23.0883C56.4886 21.1072 55.7349 19.2093 54.4146 17.7322C53.0943 16.2552 51.2931 15.295 49.3316 15.0225V15.0225Z"
+              fill="black"
+            />
+            <path
+              d="M7.81535 14.9614C7.61352 14.9746 7.41184 14.9932 7.21274 15.0225C5.25126 15.295 3.45007 16.2553 2.12981 17.7323C0.809544 19.2093 0.0558814 21.1073 0.00298604 23.0883C-0.0499094 25.0693 0.601402 27.0048 1.84096 28.5503C3.08052 30.0958 4.82789 31.151 6.77202 31.5279C6.97112 31.5651 7.17022 31.597 7.37191 31.6209C5.3639 26.2189 5.52281 20.2488 7.81535 14.9614V14.9614Z"
+              fill="black"
+            />
+            <path
+              d="M49.3318 15.0225C47.1448 9.79473 43.0941 5.56717 37.9666 3.16105C32.8391 0.754934 27.0009 0.34207 21.5863 2.00267C16.1716 3.66327 11.5671 7.27877 8.66718 12.1468C5.76731 17.0148 4.77915 22.7877 5.89469 28.344C7.01023 33.9003 10.1498 38.8433 14.7035 42.2126C19.2572 45.582 24.8998 47.1372 30.5352 46.576C36.1706 46.0149 41.3964 43.3775 45.1974 39.1762C48.9983 34.9749 51.103 29.5097 51.1025 23.8424C51.1014 20.8141 50.4995 17.8162 49.3318 15.0225ZM49.1726 31.6209C47.2307 36.8446 43.4053 41.1517 38.4493 43.6946C33.4933 46.2374 27.7657 46.8317 22.3938 45.3606C17.0219 43.8895 12.3948 40.4595 9.42325 35.7456C6.45165 31.0318 5.35078 25.3756 6.33735 19.8903C7.32392 14.4049 10.3265 9.48782 14.754 6.1067C19.1815 2.72558 24.7133 1.12536 30.2607 1.62099C35.808 2.11662 40.9691 4.6722 44.7281 8.78475C48.487 12.8973 50.5716 18.2689 50.5716 23.8424C50.5708 26.4978 50.097 29.1318 49.1726 31.6209Z"
+              fill="black"
+              stroke="black"
+            />
+            <path
+              d="M39.9529 18.662H16.5917C15.3596 18.662 14.178 19.1518 13.3067 20.0237C12.4355 20.8955 11.946 22.078 11.946 23.311C11.946 24.544 12.4355 25.7265 13.3067 26.5984C14.178 27.4703 15.3596 27.9601 16.5917 27.9601H39.9529C41.185 27.9601 42.3666 27.4703 43.2379 26.5984C44.1091 25.7265 44.5986 24.544 44.5986 23.311C44.5986 22.078 44.1091 20.8955 43.2379 20.0237C42.3666 19.1518 41.185 18.662 39.9529 18.662V18.662Z"
+              fill="black"
+            />
+            <path
+              d="M21.7471 23.1652C21.7471 24.782 20.4364 26.0927 18.8196 26.0927C17.2028 26.0927 15.8921 24.782 15.8921 23.1652C15.8921 21.5484 17.2028 20.2377 18.8196 20.2377C20.4364 20.2377 21.7471 21.5484 21.7471 23.1652Z"
+              fill="#00B0FF"
+            />
+            <path
+              d="M41.8211 23.1652C41.8211 24.782 40.5105 26.0927 38.8937 26.0927C37.2769 26.0927 35.9662 24.782 35.9662 23.1652C35.9662 21.5484 37.2769 20.2377 38.8937 20.2377C40.5105 20.2377 41.8211 21.5484 41.8211 23.1652Z"
+              fill="#00B0FF"
+            />
+          </svg>
+        </div>
+        <div>
+          <i class="fas fa-users" id="participant-toggle-btn"></i>
+          <!-- <span>Participants</span> -->
+        </div>
+
+        <div id="leave-room">
+          <i class="fas fa-sign-out-alt leave-btn red" id="leave-btn"></i>
+          <!-- <span>Leave</span> -->
+        </div>
+      </div>
+      <!-- Participants -->
+      <div class="participant-container inactive" id="participant-div">
+        <i class="fas fa-times-circle" id="close-participant-panel"></i>
+        <h2>Participants</h2>
+        <ul id="participant-list">
+          <!-- Participants will be added here through JS as li-->
+        </ul>
+      </div>
+      <div class="input-file-div inactive" id="input-file-div">
+        <i class="fas fa-times-circle" id="close-input-file-div"></i>
+        <h2>Upload your Image</h2>
+        <p>
+          Please upload high quality pictures of yours which only have your face
+          and whole of it is visible. This will help bot recognize you.
+          <br />
+          <br />
+          Please sit in a well-lighted room so that your face is clearly visible
+          and distinguishable
+        </p>
+        <div id="input-file-container">
+          <input
+            type="file"
+            accept="image/*"
+            name=" userImage1"
+            id="userImage1"
+            class="userImage"
+          />
+          <input
+            type="file"
+            name="userImage2"
+            id="userImage2"
+            class="userImage"
+            accept="image/*"
+          />
+          <input
+            type="file"
+            name="userImage3"
+            id="userImage3"
+            class="userImage"
+            accept="image/*"
+          />
+        </div>
+        <button id="userImagesUpload">Upload</button>
+      </div>
+    </main>
+    <!-- For bot functionality -->
+    <div class="no-display">
+      <video id="webcam" autoplay playsinline width="640" height="480"></video>
+    </div>
+    <script src="script.js"></script>
+    <script src="room.js"></script>
+    <script src="attendobot_room.js"></script>
+  </body>
 </html>

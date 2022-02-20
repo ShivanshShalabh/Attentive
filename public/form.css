@@ -1,0 +1,202 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+main {
+  margin-bottom: 3%;
+  margin: 2% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+body.bg1 {
+  background: url("./Images/bg.svg"), rgba(0, 0, 0, 0.35);
+}
+
+body.bg2 {
+  background: url("./Images/bg2.svg"), rgba(0, 0, 0, 0.35);
+}
+
+body.bg {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-blend-mode: darken;
+}
+
+/* Form CSS starts here */
+form {
+  font-family: "Baloo 2", cursive;
+  border-radius: 20px;
+  background-color: rgb(27, 27, 27);
+  width: 50%;
+
+  display: flex;
+  align-items: baseline;
+  justify-self: center;
+  flex-direction: column;
+  font-size: 1.75rem;
+  margin: auto;
+
+  padding: 3%;
+  color: white;
+  text-shadow: 0px 0px 10px rgb(0, 0, 0);
+  margin: 40px auto;
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 50%;
+  border-radius: 15px;
+  padding: 32px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0px 0px 6.1px -2px rgba(255, 255, 255, 0.254),
+    0px 0px 20px -2px rgba(255, 255, 255, 0.56);
+}
+
+form div span {
+  display: inline-block;
+
+  width: 35%;
+}
+
+form div input {
+  width: 60%;
+}
+
+form div input,
+form div button {
+  color: black;
+  font-family: "Poiret One", cursive;
+  font-size: 1.5rem;
+  border-radius: 7.5px;
+  padding: 5px;
+  outline: none;
+  font-weight: bold;
+  letter-spacing: 2px;
+  border: 2px solid black;
+}
+
+form div button:hover {
+  background: transparent;
+}
+
+form div button {
+  transition: all 0.75s ease-out;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  padding: 7px 10px;
+  border-radius: 15px;
+  display: block;
+  margin: auto;
+}
+
+form div {
+  width: 100%;
+  margin: 2%;
+}
+
+#ss-frequency span,
+#min-time span {
+  width: 100%;
+  display: block;
+}
+
+#ss-frequency p input,
+#min-time p input {
+  width: 5ch;
+}
+
+#ss-frequency p,
+#min-time p {
+  width: 100%;
+  text-align: center;
+}
+
+/* Form CSS ends here */
+
+footer.footer-fixed {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.error {
+  background-color: rgba(22, 22, 22, 0.5);
+
+  color: rgb(251, 188, 5);
+  padding: 1%;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+}
+
+/* Responsive CSS */
+
+@media screen and (max-width: 950px) {
+  form {
+    width: 90%;
+
+    font-size: 1.5rem;
+  }
+
+  form div input,
+  form div button {
+    font-size: 1.3rem;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  form {
+    margin-top: 5%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  form div span {
+    display: block;
+    width: 100%;
+  }
+
+  form {
+    font-size: 1.25rem;
+    margin-top: 10%;
+  }
+
+  form div input {
+    width: 90%;
+  }
+
+  form div input,
+  form div button {
+    font-size: 1.1rem;
+  }
+}
+
+h3#error-text {
+  text-align: center;
+}
+
+nav a i {
+  color: white;
+  font-size: 2rem;
+}
+
+nav h1 {
+  flex-grow: 1;
+}
+
+nav {
+  display: flex;
+  padding: 2vw 5%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+html {
+  min-width: 100vw;
+  min-height: 100vh;
+}
