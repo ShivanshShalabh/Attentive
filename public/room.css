@@ -151,9 +151,12 @@ video {
   margin-top: -1.1% !important;
 }
 
+.control-panel i {
+  cursor: pointer;
+}
+
 .control-panel i,
 .participant-container i {
-  cursor: pointer;
   color: var(--theme-blue);
 }
 

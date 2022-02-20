@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- <link rel="stylesheet" href="room.css"> -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="room.css" />
     <script
       src="https://kit.fontawesome.com/6d82381473.js"
@@ -15,8 +15,10 @@
     ></script>
 
     <script
-      type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"
+      integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
     ></script>
     <meta charset="UTF-8" />
     <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
@@ -34,7 +36,7 @@
     <script>
       const ROOM_ID = "<%= user.roomId %>";
       const NICKNAME = "<%= user.userName %>";
-      const FREQUENCY = parseInt("<%= user.frequency %>");
+      const FREQUENCY = parseFloat("<%= user.frequency %>");
       const minTime = parseInt("<%= user.minTime %>");
     </script>
   </head>

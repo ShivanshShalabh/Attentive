@@ -22,10 +22,8 @@ let botClickToDoFunc = () => {
     if (botActive) {
         // To take snapshot after a random interval after every 5 minutes
         botCallbackFunc = setInterval(() => {
-            let waitSec = Math.floor(Math.random() * (40));
-            setTimeout(() => {
+            if (labledDescriptor != undefined)
                 take_snapshot();
-            }, waitSec * 1000);
         }, WAIT_TIME);
     } else {
         clearInterval(botCallbackFunc);
@@ -71,7 +69,10 @@ Webcam.set({
 
 Webcam.attach('#webcam');
 // Function to take snapshot
+let snapShotCount = 0;
 const take_snapshot = () => {
+    snapShotCount++;
+    console.log(`Snapshot count: ${snapShotCount}`);
     Webcam.snap(async (uri) => {
         let image = new Image();
         image.src = uri;

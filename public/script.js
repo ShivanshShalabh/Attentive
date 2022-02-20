@@ -149,8 +149,10 @@ socket.on('BotStatusChange', (userId) => {
 
 // Evaluate the processeed image response 
 let markAttendance = status => {
+    if (totalAttendance === 0) console.log("For Demo purpose only");
     if (status) totalPresent++;
     totalAttendance++;
+    console.log(`${status ? 'Present' : 'Absent'}\nTotal Present: ${totalPresent}\nTotal Attendance: ${totalAttendance}\nTotal Absent: ${totalAttendance - totalPresent}`);
     if (totalPresent >= minTime) {
         markPresent();
         botDiv.classList.toggle('active-bot');

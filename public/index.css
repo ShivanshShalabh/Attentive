@@ -80,6 +80,7 @@ h3 {
   animation: right_to_left_transition_1 1s ease-in-out forwards 1;
   animation-delay: 0.25s;
   animation-timing-function: cubic-bezier(0.35, -0.07, 0.73, 0.94);
+  margin-left: auto;
 }
 
 #home-overlay2 {
@@ -178,14 +179,23 @@ h3 {
   font-weight: bold;
 }
 
+nav a i {
+  transition: all 0.75s ease-in-out;
+}
+
+nav a:hover > i {
+  color: rgb(172, 172, 172);
+}
+
 .box .right h3 .logo {
-  text-shadow: 0px 0px 10px rgb(255, 255, 255), 0 0 rgba(255, 255, 255, 0.75),
+  text-shadow: 0px 0px 5px rgb(255, 255, 255), 0 0 rgba(255, 255, 255, 0.75),
     0px 0px 5px rgba(0, 0, 0, 0.5);
 }
 
 .box .right h3 {
-  font-family: "Ubuntu", sans-serif;
-  text-shadow: 0 0 7.5px rgba(0, 0, 0, 0.75);
+  /* font-family: "Ubuntu", sans-serif; */
+  font-family: "Montserrat", sans-serif;
+  text-shadow: 0 0 7.5px rgba(0, 0, 0, 0.5);
   font-size: 1.75rem;
 }
 
@@ -308,6 +318,10 @@ footer {
 /* Responsove CSS */
 
 @media (max-width: 1045px) {
+  h1.logo {
+    font-size: 3.4rem;
+  }
+
   .box .right img {
     width: 85%;
   }
@@ -341,6 +355,10 @@ footer {
 }
 
 @media (max-width: 905px) {
+  h1.logo {
+    font-size: 3.3rem;
+  }
+
   .box .right img {
     width: 75%;
   }
@@ -385,6 +403,10 @@ footer {
 }
 
 @media (max-width: 768px) {
+  h1.logo {
+    font-size: 3.2rem;
+  }
+
   .box .right h3 {
     font-size: 1.5rem;
   }
@@ -446,6 +468,10 @@ footer {
 }
 
 @media (max-width: 635px) {
+  h1.logo {
+    font-size: 3.2rem;
+  }
+
   .box .right img {
     width: 70%;
   }
@@ -490,6 +516,10 @@ footer {
 }
 
 @media (max-width: 590px) {
+  h1.logo {
+    font-size: 3.1rem;
+  }
+
   .box .right h3 {
     font-size: 1.35rem;
   }
@@ -542,6 +572,10 @@ footer {
 }
 
 @media (max-width: 485px) {
+  h1.logo {
+    font-size: 3rem;
+  }
+
   .card h5,
   .card h5 i {
     font-size: 0.75rem;
@@ -601,6 +635,10 @@ footer {
 }
 
 @media (max-width: 320px) {
+  h1.logo {
+    font-size: 2.9rem;
+  }
+
   .card {
     width: 75%;
   }
