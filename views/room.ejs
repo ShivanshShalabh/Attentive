@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/6d82381473.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AttendoBot</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const ROOM_ID = "<%= roomId %>";
+    </script>
+</head>
+
+<body>
+    <main>
+        <div class="left_container">
+            <div class="videos_gallery">
+                <div id="video-grid">
+                </div>
+            </div>
+            <div class="control-panel">
+                <div class="">
+                    <i class="fas fa-video fa-video-slash" id="fa-video"></i>
+                    <span>Video Off</span>
+                </div>
+                <div class="">
+                    <i class="fas fa-robot" id="ai-robo"></i>
+                    <span>Bot Inactive</span>
+                </div>
+                <div class="">
+                    <i class="fas fa-microphone fa-microphone-slash" id="fa-microphone"></i>
+                    <span>Unmute</span>
+                </div>
+                <div class="">
+                    <i class="fas fa-users" id="participant-toggle-btn"></i>
+                    <span>Participants</span>
+                </div>
+                <div class="">
+                    <i class="fas fa-comment-alt" id="chat-toggle-btn"></i>
+                    <span>Chat</span>
+                </div>
+                <div class="">
+                    <i class="fas fa-sign-out-alt leave-btn red" id="leave-btn"></i>
+                    <span>Leave</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="messages_parent_div inactive" id="chat-div">
+            <i class="fas fa-times-circle" id="close-chat-panel"></i>
+            <h2>Chats</h2>
+            <div class="messages_container">
+                <ul id="message-inbox">
+
+                </ul>
+            </div>
+            <div class="input_container">
+
+                <input type="text" name="" id="message-box">
+                <i class="fas fa-paper-plane" id="message-submit-btn"></i>
+            </div>
+        </div>
+        <div class="participant-container inactive" id="participant-div">
+            <i class="fas fa-times-circle" id="close-participant-panel"></i>
+            <h2>Participants</h2>
+            <ul id="participant-list">
+
+            </ul>
+        </div>
+    </main>
+    <script src="script.js"></script>
+    <script src="meeting.js"></script>
+    <script src="room.js"></script>
+</body>
+
+</html>
