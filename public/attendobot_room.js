@@ -1,20 +1,67 @@
-let tapCount = 0;
-
-botDiv.addEventListener('click', (id) => {
+let botActive = false;
+let userImage = [];
+const WAIT_TIME = FREQUENCY * 60 * 1000;
+// COnverting the image to base64
+let getBase64Image = (image, index) => {
+    let reader = new FileReader();
+    reader.readAsDataURL(image);
+    reader.onload = function () {
+        let base64 = reader.result;
+        let temp_image = new Image();
+        temp_image.src = base64;
+        userImage[index] = temp_image;
+    };
+    reader.onerror = function (error) {
+        console.log('Error: ', error);
+    };
+};
+let botClickToDoFunc = () => {
     botDiv.classList.toggle('active-bot');
-    tapCount++;
-    if (tapCount % 2 != 0) {
+    botStatusChange();
+    botActive = !botActive;
+    if (botActive) {
+        // To take snapshot after a random interval after every 5 minutes
         botCallbackFunc = setInterval(() => {
-            let waitSec = Math.floor(Math.random() * (40 - 0) + 0);
-            console.log(waitSec);
+            let waitSec = Math.floor(Math.random() * (40));
             setTimeout(() => {
                 take_snapshot();
             }, waitSec * 1000);
-        }, 5 * 60 * 1000);
+        }, WAIT_TIME);
     } else {
         clearInterval(botCallbackFunc);
     }
+};
+botDiv.addEventListener('click', () => {
+    if (!userImage.includes(undefined)) {
+        botClickToDoFunc();
+    } else {
+        document.getElementById("input-file-div").classList.remove("inactive");
+    }
 });
+
+// Closing input file pop-up
+document.getElementById("close-input-file-div").addEventListener('click', () => document.getElementById("input-file-div").classList.add("inactive"));
+
+let userImageInputs = document.getElementsByClassName("userImage");
+// Event-listener to process the image on upload
+for (let i = 0; i < userImageInputs.length; i++) {
+    userImage.push(undefined);
+    userImageInputs[i].addEventListener('change', async (e) => {
+        getBase64Image(e.target.files[0], i);
+    }
+    );
+}
+
+// Event-listener to handle the image upload
+document.getElementById("userImagesUpload").addEventListener('click', () => {
+    if (!userImage.includes(undefined)) {
+        document.getElementById("input-file-div").classList.add("inactive");
+        botClickToDoFunc();
+        labeledImages();
+    }
+});
+
+// Webcam setup
 Webcam.set({
     width: 640,
     height: 480,
@@ -23,81 +70,12 @@ Webcam.set({
 });
 
 Webcam.attach('#webcam');
-
+// Function to take snapshot
 const take_snapshot = () => {
-    Webcam.snap((uri) => {
-        let img = document.getElementById('temp');
-        img.removeAttribute('src');
-        img.setAttribute('src', uri);
-        let base64_value = uri.split(';')[1].split(',')[1];
-        console.log(base64_value);
-        
-        send_image_data(base64_value);
-        // star1
-        // const reader = new FileReader();
-        // reader.onload = function () {
-        //     const bytes = new Uint8Array(img.result);
-        // };
-        // reader.readAsArrayBuffer(img.files[0]);
-        // console.log('done');
-        // star2
-        // const reader = new FileReader();
-        // reader.onload = function () {
-        //     const base64 = img.result.replace(/.*base64,/, '');
-        //     socket.emit('image', base64);
-        // };
-        // reader.readAsDataURL(img.files[0]);
-        // str3
-        // let c = document.getElementById("canvas");
-        // let ctx = c.getContext("2d");
-        // ctx.drawImage(img, 10, 10);
-        // console.log(c.toDataURL());
-
-        // getBase64(uri);
-        // toBase64(img);
+    Webcam.snap(async (uri) => {
+        let image = new Image();
+        image.src = uri;
+        let response = await process_image(image);
+        markAttendance(response);
     });
 };
-
-// document.getElementById('bot-div').addEventListener('click', () => {
-//     take_snapshot();
-// });
-// const getBase64Image = (img) => {
-//     let canvas = document.createElement("canvas");
-//     canvas.width = img.width;
-//     canvas.height = img.height;
-//     let ctx = canvas.getContext("2d");
-//     ctx.drawImage(img, 0, 0);
-//     let dataURL = canvas.toDataURL("image/png");
-//     return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-// };
-
-// const toBase64 = (file) => {
-//     let base64String = "";
-//     let reader = new FileReader();
-//     console.log("next");
-//     reader.onload = function () {
-//         base64String = reader.result.replace("data:", "")
-//             .replace(/^.+,/, "");
-
-//         imageBase64Stringsep = base64String;
-//         console.log(base64String);
-//     };
-//     reader.readAsDataURL(file);
-//     console.log("Base64String about to be printed");
-//     alert(base64String);
-// };
-
-// const getBase64 = url => {
-//     console.log('doing');
-//     imageToBase64(url)
-//         .then(
-//             (response) => {
-//                 console.log(response);
-//             }
-//         )
-//         .catch(
-//             (error) => {
-//                 console.log(error);
-//             }
-//         );
-// };

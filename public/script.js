@@ -1,19 +1,23 @@
+let totalPresent = 0;
+let botStatusChange;
+let totalAttendance = 0;
 let send_image_data;
+let messageInbox = document.getElementById('message-inbox');
 let markPresent;
 let botClickFunc;
-var PEER_ID = ' ';
+let PEER_ID = ' ';
 
 const socket = io('/');
-const videoGrid = document.getElementById('video-grid');
+const videoGrid = document.getElementById('other-participants-video-container');
 const myVideo = document.createElement('video');
 myVideo.muted = true;
 
-// var peer = new Peer();
-var peer = new Peer(undefined, {
-    path: '/peerjs',
-    host: '/',
-    port: '3000',
-});
+let peer = new Peer();
+// let peer = new Peer(undefined, {
+//     path: '/peerjs',
+//     host: '/',
+//     port: '3030',
+// });
 
 // Ask user for camera and microphone permissions
 navigator.mediaDevices.getUserMedia({
@@ -21,74 +25,83 @@ navigator.mediaDevices.getUserMedia({
     audio: true
 }).then(stream => {
     myVideoStream = stream;
-    addVideoStream(myVideo, stream);
+    addVideoStream(myVideo, stream, true); // Add your video stream to video element
 
     peer.on('call', call => {
         call.answer(stream);
         const video = document.createElement('video');
         call.on('stream', userVideoStream => {
-            addVideoStream(video, userVideoStream);
+            addVideoStream(video, userVideoStream, false); // Add the video stream to video element
         }
         );
     });
 
+    // Listen for other users to connect
     socket.on('user-connected', (userID) => {
         connectToNewUser(userID, stream);
     });
+    // Mute and turn off video of user
     myVideoStream.getAudioTracks()[0].enabled = false;
     myVideoStream.getVideoTracks()[0].enabled = false;
 });
-
+// Initialize the peer object and add event listeners
 peer.on('open', id => {
-    socket.emit('join-room', ROOM_ID, id, NICKNAME);
+    socket.emit('join-room', ROOM_ID, id);
     document.getElementById('fa-microphone').addEventListener('click', () => muteUnmute(id));
     document.getElementById('fa-video').addEventListener('click', () => videoOnOff(id));
     document.getElementById('leave-btn').addEventListener('click', () => disconnect(id));
+    document.addEventListener('keydown', (event) => { if (event.altKey && event.key === 'v') videoOnOff(id); });
+    document.addEventListener('keydown', (event) => { if (event.altKey && event.key === 'a') muteUnmute(id); });
     markPresent = () => {
         socket.emit('markPresent', ROOM_ID, id);
     };
-    botDiv.addEventListener('click', () => {
-        socket.emit('botStatusChange', ROOM_ID, id);
-    });
-    send_image_data = base64_val => socket.emit('process_image', ROOM_ID, id, base64_val);
+    botStatusChange = () => {
+        if (!userImage.includes(undefined))
+            socket.emit('botStatusChange', ROOM_ID, id);
+    };
     socket.emit('user-joined', ROOM_ID, NICKNAME, id);
 });
+// New user connected
 const connectToNewUser = (userID, stream) => {
     const call = peer.call(userID, stream);
     const video = document.createElement('video');
     video.setAttribute('id', userID);
 
     call.on('stream', userVideoStream => {
-        addVideoStream(video, userVideoStream);
+        addVideoStream(video, userVideoStream, false);
     });
 };
-const addVideoStream = (video, stream) => {
+// Function to add a video stream to a video element
+const addVideoStream = (video, stream, isMyVideo) => {
     video.srcObject = stream;
     video.addEventListener('loadedmetadata', () => {
         video.play();
     });
-    videoGrid.append(video);
+    if (!isMyVideo)
+        videoGrid.append(video);
+    else {
+        document.getElementById('my-video-container').append(video);
+    }
 };
+// Function to send message
 const sendMessage = () => {
     if (messageBox.value != "") {
-        socket.emit('message', messageBox.value, NICKNAME);
+        socket.emit('message', ROOM_ID, messageBox.value, NICKNAME);
         createMessageLi(messageBox.value, "You", false);
         messageBox.value = '';
     }
 };
-
+// Function to trigger message to be sent
 let messageBox = document.getElementById('message-box');
 document.getElementsByTagName('html')[0].addEventListener("keyup", (e) => {
     if (e.key == "Enter") sendMessage();
 });
 document.getElementById('message-submit-btn').addEventListener("click", sendMessage);
-
-let messageInbox = document.getElementById('message-inbox');
-
-socket.on('createMessage', (message, tempNickname) => {
-    createMessageLi(message, tempNickname, true);
+// Listen to incoming messages
+socket.on('createMessage', (message, senderNickname) => {
+    createMessageLi(message, senderNickname, true);
 });
-
+// Add message to messageInbox
 const createMessageLi = (message, userName, incoming) => {
     let liToAppend = document.createElement('li');
     liToAppend.classList.add(incoming ? 'recieved' : 'sent');
@@ -97,17 +110,16 @@ const createMessageLi = (message, userName, incoming) => {
     scroollToBottom();
 };
 
+// Scroll to bottom of messageInbox
 const scroollToBottom = () => {
-    // Scroll to bottom of messageInbox
     let messageInboxScroll = $('.messages_container');
     messageInboxScroll.scrollTop(messageInboxScroll.prop('scrollHeight'));
 };
 
-// Mute video off
-
+// Clear participant list
 const resetParticipants = () => document.getElementById('participant-list').innerHTML = '';
-const func = () => { };
-func();
+
+// Listen to new participant list event
 socket.on('addParticipant', name => {
     resetParticipants();
 
@@ -115,6 +127,8 @@ socket.on('addParticipant', name => {
         appendNameParticipant(element);
     });
 });
+
+// Listen to user-left event
 socket.on('removeParticipant', (name, userId) => {
     resetParticipants();
     name.forEach(element => {
@@ -122,30 +136,38 @@ socket.on('removeParticipant', (name, userId) => {
     });
     removeVideo(userId);
 });
-socket.on('changeMuteStatus', (userId, unmuteStatus) => {
-    console.log(`someone ${unmuteStatus ? 'unmuted' : 'muted'}`);
-    document.getElementById(`p${userId}`).children[4].children[0].classList.toggle('fa-microphone-slash');
-    console.log(`p${userId}`);
-});
-socket.on('changeVideoStatus', (userId, unmuteStatus) => {
-    console.log(`someone ${unmuteStatus ? 'unmuted' : 'muted'}`);
-    document.getElementById(`p${userId}`).children[3].children[0].classList.toggle('fa-video-slash');
-});
+
+// Listen to user-mark-present event
 socket.on('markPresent', (userId) => {
-    console.log("uwu");
     document.getElementById(`p${userId}`).children[2].children[0].classList.add('present');
 });
 
+// Listen to bot-status-change event
 socket.on('BotStatusChange', (userId) => {
-    console.log("owo");
     document.getElementById(`p${userId}`).children[1].children[0].classList.toggle('attentive');
 });
-socket.on('imageProcessed', (automl_response) => {
-    console.log(automl_response);
-});
+
+// Evaluate the processeed image response 
+let markAttendance = status => {
+    if (status) totalPresent++;
+    totalAttendance++;
+    if (totalPresent >= minTime) {
+        markPresent();
+        botDiv.classList.toggle('active-bot');
+        botStatusChange();
+        if (botCallbackFunc)
+            clearInterval(botCallbackFunc);
+        botClickToDoFunc = () => { };
+        displayMessage("Attendance Marked");
+    }
+};
+
+// Remove Video element from videoGrid of user
 const removeVideo = (userId) => {
     document.getElementById(userId).remove();
 };
+
+// Append name to participant list
 const appendNameParticipant = (name) => {
     let newParticipant = document.createElement('li');
     newParticipant.setAttribute('id', `p${name[1]}`);
@@ -157,10 +179,18 @@ const appendNameParticipant = (name) => {
 <div><i class="fas fa-microphone fa-microphone-slash"></i></div>`;
     document.getElementById('participant-list').appendChild(newParticipant);
 };
+
+// Function to leave room
 const disconnect = (PEER_ID_2) => {
     socket.emit('leave-meeting', ROOM_ID, PEER_ID_2);
     socket.emit('leave-room', ROOM_ID, PEER_ID_2);
+    window.location = '/';
 };
+
+// Handle to user unmute-mute event
+socket.on('changeMuteStatus', (userId, unmuteStatus) => {
+    document.getElementById(`p${userId}`).children[4].children[0].classList.toggle('fa-microphone-slash');
+});
 const muteUnmute = (id) => {
     document.getElementById('fa-microphone').classList.toggle('fa-microphone-slash');
     if (myVideoStream.getAudioTracks()[0].enabled) {
@@ -171,6 +201,11 @@ const muteUnmute = (id) => {
         myVideoStream.getAudioTracks()[0].enabled = true;
     }
 };
+
+// Handle user video on/off event
+socket.on('changeVideoStatus', (userId, unmuteStatus) => {
+    document.getElementById(`p${userId}`).children[3].children[0].classList.toggle('fa-video-slash');
+});
 const videoOnOff = (id) => {
     document.getElementById('fa-video').classList.toggle('fa-video-slash');
 
